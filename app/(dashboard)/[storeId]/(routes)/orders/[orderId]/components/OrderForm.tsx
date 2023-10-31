@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Heading } from '@/components/Heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Order, STATUS } from '@prisma/client';
+import { Order, Product, STATUS } from '@prisma/client';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,10 +31,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 
 interface OrderFormProps {
   initialData: Order | null;
+  products: Product[];
 }
 
 const formSchema = z.object({
@@ -46,7 +46,7 @@ const formSchema = z.object({
 
 type OrderFormValues = z.infer<typeof formSchema>;
 
-export const OrderForm = ({ initialData }: OrderFormProps) => {
+export const OrderForm = ({ initialData, products }: OrderFormProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const params = useParams();
@@ -131,7 +131,41 @@ export const OrderForm = ({ initialData }: OrderFormProps) => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className='space-y-8 w-full'>
-          <div className='grid grid-cols-3 gap-8'>Input Field</div>
+          <div className='grid grid-cols-3 gap-8'>
+            <FormField
+              control={form.control}
+              name='productId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Select a product'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {products.map((product) => (
+                        <SelectItem
+                          key={product.id}
+                          value={product.id}>
+                          {product.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <Button
             disabled={loading}
             className='ml-auto'
