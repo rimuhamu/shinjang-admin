@@ -40,11 +40,11 @@ model Product{
 
 model Order{
   id String @id @default(cuid())
-  isPaid Boolean @default(false)  
+  isPaid Boolean @default(false)
   phone String @default("")  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
-  status Status @default(PAID)
+  status STATUS @default(ORDERED)
 
   storeId String
 
@@ -63,7 +63,8 @@ model OrderItem{
   product Product @relation(fields: [productId], references: [id])
 }
 
-enum Status{
+enum STATUS{
+  ORDERED
   PAID
   PACKED
   SENT
