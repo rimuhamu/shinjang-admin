@@ -15,12 +15,6 @@ export async function GET(
       where: {
         id: params.productId,
       },
-      include: {
-        images: true,
-        category: true,
-        size: true,
-        color: true,
-      },
     });
     return NextResponse.json(product);
   } catch (error) {
@@ -37,16 +31,7 @@ export async function PATCH(
     const { userId } = auth();
     const body = await req.json();
 
-    const {
-      name,
-      price,
-      categoryId,
-      colorId,
-      sizeId,
-      images,
-      isFeatured,
-      isArchived,
-    } = body;
+    const { name, price, isArchived } = body;
 
     if (!userId) {
       return new NextResponse('Unauthenticated', { status: 401 });
@@ -56,24 +41,8 @@ export async function PATCH(
       return new NextResponse('Name is required', { status: 400 });
     }
 
-    if (!images || !images.length) {
-      return new NextResponse('Images is required', { status: 400 });
-    }
-
     if (!price) {
       return new NextResponse('Price is required', { status: 400 });
-    }
-
-    if (!categoryId) {
-      return new NextResponse('Category id is required', { status: 400 });
-    }
-
-    if (!colorId) {
-      return new NextResponse('Color id is required', { status: 400 });
-    }
-
-    if (!sizeId) {
-      return new NextResponse('Size id is required', { status: 400 });
     }
 
     if (!params.productId) {
@@ -91,32 +60,14 @@ export async function PATCH(
       return new NextResponse('Unauthorized', { status: 403 });
     }
 
-    await prismadb.product.update({
+    const product = await prismadb.product.update({
       where: {
         id: params.productId,
       },
       data: {
         name,
         price,
-        categoryId,
-        colorId,
-        sizeId,
-        isFeatured,
         isArchived,
-        images: {
-          deleteMany: {},
-        },
-      },
-    });
-
-    const product = await prismadb.product.update({
-      where: { id: params.productId },
-      data: {
-        images: {
-          createMany: {
-            data: [...images.map((image: { url: string }) => image)],
-          },
-        },
       },
     });
 

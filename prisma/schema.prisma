@@ -31,9 +31,6 @@ model Product{
   updatedAt DateTime @updatedAt
     
   storeId String
-  categoryId String
-  sizeId String
-  colorId String
 
   orderItems OrderItem[]
 
