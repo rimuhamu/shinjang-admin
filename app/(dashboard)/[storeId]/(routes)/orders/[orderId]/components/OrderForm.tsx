@@ -23,7 +23,6 @@ import { Input } from '@/components/ui/input';
 import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/AlertModal';
-import { ImageUpload } from '@/components/ImageUpload';
 import {
   Select,
   SelectContent,
@@ -31,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface OrderFormProps {
   initialData: Order | null;
@@ -51,6 +51,8 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
+
+  const statusKey = Object.keys(STATUS);
 
   const title = initialData ? 'Edit order' : 'Create order';
   const description = initialData ? 'Edit a order' : 'Add a new order';
@@ -157,6 +159,73 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
                           key={product.id}
                           value={product.id}>
                           {product.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='phone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder='Phone number'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='isPaid'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className='space-y-1 leading-none'>
+                    <FormLabel>Paid</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='status'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Set order status'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {(statusKey as Array<keyof typeof STATUS>).map((key) => (
+                        <SelectItem
+                          key={key}
+                          value={key}>
+                          {key}
                         </SelectItem>
                       ))}
                     </SelectContent>
