@@ -36,12 +36,12 @@ interface OrderFormProps {
   products: Product[];
 }
 
-// enum STATUS {
-//   ORDERED = 'Ordered',
-//   PAID = 'Paid',
-//   PACKED = 'Packed',
-//   SENT = 'Sent',
-// }
+enum STATUS {
+  ORDERED = 'ORDERED',
+  PAID = 'PAID',
+  PACKED = 'PACKED',
+  SENT = 'SENT',
+}
 
 const formSchema = z.object({
   phone: z.string().min(1),
@@ -58,7 +58,7 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
   const params = useParams();
   const router = useRouter();
 
-  //const statusKey = Object.keys(STATUS);
+  const statusKey = Object.keys(STATUS);
 
   const title = initialData ? 'Edit order' : 'Create order';
   const description = initialData ? 'Edit a order' : 'Add a new order';
@@ -228,17 +228,17 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {/* {(statusKey as Array<keyof typeof STATUS>).map((key) => (
+                      {(statusKey as Array<keyof typeof STATUS>).map((key) => (
                         <SelectItem
                           key={key}
-                          value={key.valueOf()}>
-                          {STATUS.toString()}
+                          value={key}>
+                          {key}
                         </SelectItem>
-                      ))} */}
-                      <SelectItem value='Ordered'>Ordered</SelectItem>
+                      ))}
+                      {/* <SelectItem value='Ordered'>Ordered</SelectItem>
                       <SelectItem value='Paid'>Paid</SelectItem>
                       <SelectItem value='Packed'>Packed</SelectItem>
-                      <SelectItem value='Sent'>Sent</SelectItem>
+                      <SelectItem value='Sent'>Sent</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
