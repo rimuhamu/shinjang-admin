@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Heading } from '@/components/Heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Order, Product, STATUS } from '@prisma/client';
+import { Order, Product } from '@prisma/client';
 import { Trash } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,6 @@ import { useState } from 'react';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,11 +36,18 @@ interface OrderFormProps {
   products: Product[];
 }
 
+// enum STATUS {
+//   ORDERED = 'Ordered',
+//   PAID = 'Paid',
+//   PACKED = 'Packed',
+//   SENT = 'Sent',
+// }
+
 const formSchema = z.object({
   phone: z.string().min(1),
   productId: z.string().min(1),
   isPaid: z.boolean().default(false).optional(),
-  status: z.nativeEnum(STATUS),
+  status: z.string().min(1),
 });
 
 type OrderFormValues = z.infer<typeof formSchema>;
@@ -52,7 +58,7 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
   const params = useParams();
   const router = useRouter();
 
-  const statusKey = Object.keys(STATUS);
+  //const statusKey = Object.keys(STATUS);
 
   const title = initialData ? 'Edit order' : 'Create order';
   const description = initialData ? 'Edit a order' : 'Add a new order';
@@ -65,7 +71,7 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
       productId: '',
       phone: '',
       isPaid: false,
-      status: STATUS.ORDERED,
+      status: '',
     },
   });
 
@@ -78,6 +84,7 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
           data
         );
       } else {
+        console.log(data);
         await axios.post(`/api/${params.storeId}/orders`, data);
       }
       router.refresh();
@@ -221,13 +228,17 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {(statusKey as Array<keyof typeof STATUS>).map((key) => (
+                      {/* {(statusKey as Array<keyof typeof STATUS>).map((key) => (
                         <SelectItem
                           key={key}
-                          value={key}>
-                          {key}
+                          value={key.valueOf()}>
+                          {STATUS.toString()}
                         </SelectItem>
-                      ))}
+                      ))} */}
+                      <SelectItem value='Ordered'>Ordered</SelectItem>
+                      <SelectItem value='Paid'>Paid</SelectItem>
+                      <SelectItem value='Packed'>Packed</SelectItem>
+                      <SelectItem value='Sent'>Sent</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

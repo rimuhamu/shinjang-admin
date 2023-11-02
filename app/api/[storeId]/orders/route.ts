@@ -46,14 +46,23 @@ export async function POST(
     const order = await prismadb.order.create({
       data: {
         //! DATABASE RELATION ERROR
-        productId,
         phone,
         status,
         isPaid,
         storeId: params.storeId,
+        orderItems: {
+          create: {
+            product: {
+              connect: {
+                id: productId,
+              },
+            },
+          },
+        },
       },
     });
 
+    console.log(body);
     return NextResponse.json(order);
   } catch (error) {
     console.log('[ORDERS_POST]', error);

@@ -36,7 +36,7 @@ export const ProductClient = ({ data }: ProductClientProps) => {
       />
       <Heading
         title='API'
-        description='Api calls for Products'
+        description='API calls for Products'
       />
       <Separator />
       <ApiList
