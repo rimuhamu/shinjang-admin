@@ -27,6 +27,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "downshift": "^8.2.2",
     "lucide-react": "^0.279.0",
     "next": "latest",
     "next-cloudinary": "^4.23.0",

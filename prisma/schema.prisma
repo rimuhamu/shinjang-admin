@@ -50,7 +50,7 @@ model Order{
 
   orderItems OrderItem[]
 
-  store Store @relation(fields: [storeId], references: [id])
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
 }
 
 model OrderItem{

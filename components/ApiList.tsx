@@ -36,7 +36,7 @@ export const ApiList = ({ entityName, entityIdName }: ApiListProps) => {
         description={`${baseUrl}/${entityName}/{${entityIdName}}`}
       />
       <ApiAlert
-        title='PATCH'
+        title='DELETE'
         variant='admin'
         description={`${baseUrl}/${entityName}/{${entityIdName}}`}
       />
