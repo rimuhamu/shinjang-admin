@@ -43,7 +43,6 @@ export async function POST(
       data: {
         name,
         price,
-
         isArchived,
         storeId: params.storeId,
       },

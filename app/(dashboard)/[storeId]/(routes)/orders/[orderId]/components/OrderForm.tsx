@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { MultiSelect } from 'primereact/multiselect';
 import { Input } from '@/components/ui/input';
 import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
@@ -174,6 +175,7 @@ export const OrderForm = ({ initialData, products }: OrderFormProps) => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name='phone'

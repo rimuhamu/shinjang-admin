@@ -91,42 +91,42 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { storeId: string; orderId: string } }
-) {
-  try {
-    const { userId } = auth();
+// export async function DELETE(
+//   req: Request,
+//   { params }: { params: { storeId: string; orderId: string } }
+// ) {
+//   try {
+//     const { userId } = auth();
 
-    if (!userId) {
-      return new NextResponse('Unauthenticated', { status: 401 });
-    }
+//     if (!userId) {
+//       return new NextResponse('Unauthenticated', { status: 401 });
+//     }
 
-    if (!params.orderId) {
-      return new NextResponse('Order id is required', { status: 400 });
-    }
+//     if (!params.orderId) {
+//       return new NextResponse('Order id is required', { status: 400 });
+//     }
 
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-      },
-    });
+//     const storeByUserId = await prismadb.store.findFirst({
+//       where: {
+//         id: params.storeId,
+//       },
+//     });
 
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized', { status: 403 });
-    }
+//     if (!storeByUserId) {
+//       return new NextResponse('Unauthorized', { status: 403 });
+//     }
 
-    console.log(params.orderId);
+//     console.log(params.orderId);
 
-    const order = await prismadb.order.deleteMany({
-      where: {
-        id: params.orderId,
-      },
-    });
+//     const order = await prismadb.order.deleteMany({
+//       where: {
+//         id: params.orderId,
+//       },
+//     });
 
-    return NextResponse.json(order);
-  } catch (error) {
-    console.log('[ORDER_DELETE]', error);
-    return new NextResponse('Internal error', { status: 500 });
-  }
-}
+//     return NextResponse.json(order);
+//   } catch (error) {
+//     console.log('[ORDER_DELETE]', error);
+//     return new NextResponse('Internal error', { status: 500 });
+//   }
+// }
